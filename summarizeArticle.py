@@ -19,7 +19,7 @@ def summarize_article(url):
     print(url)
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         # if a normal 200 code w/out extras - throw the rss into a list
         if response.status_code == 200:
             article = Article(url)

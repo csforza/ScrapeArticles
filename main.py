@@ -6,7 +6,6 @@ from summarizeArticle import summarize_article
 from prepArticle import prep_article_dict
 from checkEurope import Check_Europe_Section
 import concurrent.futures
-import json
 from checkArticle import check_article
 from jsonArticles import results_into_json
 
