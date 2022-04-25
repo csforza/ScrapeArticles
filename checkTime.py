@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from datetime import datetime, timedelta
 
 TODAY = datetime.now().strftime("%d %b %Y")

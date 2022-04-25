@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from textblob import TextBlob
 from statistics import mean
 

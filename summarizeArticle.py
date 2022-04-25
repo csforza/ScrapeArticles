@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article, Config

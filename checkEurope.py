@@ -1,3 +1,4 @@
+#!/usr/bin/python
 def Check_Europe_Section(article):
     # note: the spaces here are deliberate
     fr_keys = [' france ', ' french ', ' paris ', ' macron ', ' France ', ' French ', ' Paris ', ' Macron ']

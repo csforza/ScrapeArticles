@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from datetime import datetime, timedelta
 
 TWO_DAYS_AGO_DATE = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")

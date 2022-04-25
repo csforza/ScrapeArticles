@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import concurrent.futures
 import json
 import random
@@ -142,17 +143,18 @@ if __name__ == '__main__':
     from grabFeeds import append_google_feeds
     from prepArticle import prep_article_dict
     from checkEurope import Check_Europe_Section
+    from checkArticle import check_article
 
     with open('resources/feeds/EuropeNewsFeed.txt', 'r') as file1:
         europe_feeds = file1.read().splitlines()
 
-    europe_countries = ['france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
-                        'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
-                        'Moldova',
+    europe_countries = [ #'france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
+                        # 'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
+                        # 'Moldova', 'Iceland', 'georgia tbilisi'
                         'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo', 'Montenegro', 'Bosnia',
                         'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
-                        'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
-                        'Iceland', 'georgia tbilisi']
+                        #'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
+                        ]
 
     europe_feeds.extend(append_google_feeds(europe_countries))
 
@@ -170,6 +172,8 @@ if __name__ == '__main__':
             if g.result():
                 europe_articles_list.append(prep_article_dict(g.result()))
 
+    print("sleeping")
+    time.sleep(5)
     # now we need to set europe countries lists
     france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list = [], [], [], [], [], [], []
 
@@ -199,18 +203,29 @@ if __name__ == '__main__':
                             r_o_e_list.append(article1)
 
     all_eu_countries_list = [france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list]
-    # count = 1
-    # for f in all_eu_countries_list:
-    #     articles_dict = {}
-    #     for b in f[14:25]:
-    #         try:
-    #             articles_dict[b['title']] = b
-    #         except:
-    #             continue
-    #     with open(f"{str(count)}.json",
-    #               "w") as outfile:
-    #         json.dump(articles_dict, outfile, indent=4)
-    #     count += 1
+
+    print("sleeping")
+    time.sleep(5)
+
+    groups_for_json = []
+    for country in all_eu_countries_list:
+        print(f'Country: {len(country)}')
+        groups_for_json.append(check_article(country))
+
+    count = 1
+    for f in groups_for_json:
+        # articles_dict = {}
+        print(len(f))
+        # for b in f:
+        #     try:
+        #         articles_dict[b['title']] = b
+        #     except:
+        #         continue
+        with open(f"{str(count)}.json",
+                  "w") as outfile:
+            json.dump(f, outfile, indent=4)
+        count += 1
 
     stop = time.perf_counter()
     print(f'Elapsed time: {round(start - stop, 2)} seconds')
+

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import time
 from grabFeeds import grab_feeds
 from grabLinks import grab_links
@@ -6,6 +7,7 @@ from prepArticle import prep_article_dict
 from checkEurope import Check_Europe_Section
 import concurrent.futures
 import json
+from checkArticle import check_article
 
 
 # note order: europe_feeds, usa_feeds, world_feeds, me_feeds, americas_feeds, tech_feeds
@@ -55,15 +57,12 @@ def main():
 
     # now we need to set europe countries lists
     france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list = [], [], [], [], [], [], []
-
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as ex:
         countries_results = [ex.submit(Check_Europe_Section, eal) for eal in europe_articles_list]
-
         for gg in concurrent.futures.as_completed(countries_results):
             if gg.result():
                 article1 = gg.result()[0]
                 countries = gg.result()[1]
-
                 if len(countries) > 0:
                     for country in countries:
                         if country == 'france':
@@ -81,9 +80,30 @@ def main():
                         if country == 'rest of europe':
                             r_o_e_list.append(article1)
 
-    all_eu_countries_list = [france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list]
+    all_countries_list = [france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list,
+                          usa_articles_list, world_articles_list, me_articles_list, americas_articles_list,
+                          tech_articles_list]
 
+    print("sleeping")
+    time.sleep(5)
 
+    groups_for_json = []
+    for country in all_countries_list:
+        print(f'Country: {len(country)}')
+        groups_for_json.append(check_article(country))
+
+    count = 1
+    for f in groups_for_json:
+        print(len(f))
+        if len(f) < 20:
+            with open(f"{str(count)}.json",
+                      "w") as outfile:
+                json.dump(f, outfile, indent=4)
+        else:
+            with open(f"{str(count)}.json",
+                      "w") as outfile:
+                json.dump(f[:20], outfile, indent=4)
+        count += 1
 
 if __name__ == '__main__':
     start = time.perf_counter()
@@ -91,19 +111,3 @@ if __name__ == '__main__':
     stop = time.perf_counter()
 
     print(f'Elapsed time: {round(stop - start, 2)} seconds')
-
-    # BRING BACK TO MAIN FUNCTION IF NECESSARY
-    # count = 1
-    # for f in full_articles_list:
-    #     articles_dict = {}
-    #     # test_list = [f[134], f[456], f[14], f[567], f[2], f[777], f[321], f[232], f[665], f[44], f[55], f[66], f[77],
-    #     #              f[88], f[99]]
-    #     for b in f[101:122]:
-    #         try:
-    #             articles_dict[b['title']] = b
-    #         except:
-    #             continue
-    #     with open(f"{str(count)}.json",
-    #               "w") as outfile:
-    #         json.dump(articles_dict, outfile, indent=4)
-    #     count += 1

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 def keep_or_dump(article):
     bad_list = [
         'hollywood', 'actor', 'actress', 'sport', 'sports', 'singer', 'music', 'song', 'entertainment', 'football',
@@ -24,18 +25,15 @@ def keep_or_dump(article):
     # we want regular news and not entertainment or politics
     for keys in keywords:
         if keys in bad_list:
-            print("bad keys : ", keys)
             return None
 
     # checks if any of the bad words are in the article more than once
     for keyword in text.split(' '):
         if keyword.lower() in bad_list:
             if text.count(keyword.lower()) > 1:
-                print("bad words : ", keyword)
                 return None
 
     if url == '':
-        print("no link")
         return None
 
     # for section in bad_sections:
@@ -47,48 +45,36 @@ def keep_or_dump(article):
     #             return None
 
     if len(keywords) < 3:
-        print('not enough keys')
         return None
     if "Morning Report" in title:
-        print("bad title 1")
         return None
     # to get rid of useless covid numbers
     if "Covid-19 in Bulgaria" in title:
-        print("bad title 2")
         return None
     if "Saudi Arabia records" in title or 'UAE reports' in title:
-        print("bad title 3")
         return None
     if "Coronavirus in Russia: The Latest News" in title:
-        print("bad title 4")
         return None
     # no false fact checks
     if "fact-check" in title or "Fact-check" in title:
-        print("bad title 5")
         return None
     if "Photos:" in title:
-        print("bad title 6")
+        return None
+    if "LIVE UPDATES" in title or "Live Updates" in title or "Live updates" in title:
         return None
     if "updates:" in title or "update:" in title:
-        print("bad title 7")
         return None
     if 'Poll:' in title:
-        print("bad title 8")
         return None
     if 'Become a certified AWS professional' in title:
-        print("bad title 9")
         return None
     if 'COVID-19: ' in title:
-        print("bad title 10")
         return None
     if 'COVID-19 in Bulgaria' in title:
-        print("bad title 11")
         return None
     if 'PS5' in title or 'Xbox' in title or 'Nintendo' in title:
-        print("bad title 12")
         return None
     if 'VPN bundle' in title:
-        print("bad title 13")
         return None
 
     # if the article is worth using, check the title or html encoding
@@ -100,8 +86,10 @@ def keep_or_dump(article):
         title = title.replace('&#039;', "'")
     if '\u2019' in title:
         title = title.replace('\u2019', "'")
-    if '\u2013' in title or '\u2014' in title:
+    if '\u2013' in title:
         title = title.replace('\u2013', '-')
+    if '\u2014' in title:
+        title = title.replace('\u2014', '-')
     if '\xa0' in title:
         title = title.replace('\xa0', "")
     if '\u200b' in title:

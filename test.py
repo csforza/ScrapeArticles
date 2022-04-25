@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # I believe we will return just the link, channel, and pub date
 def grab_links(feeds):
     return_article_links = []

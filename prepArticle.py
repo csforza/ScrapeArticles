@@ -1,3 +1,4 @@
+#!/usr/bin/python
 def prep_article_dict(data):
     summary = data[0]
     text = data[1]
