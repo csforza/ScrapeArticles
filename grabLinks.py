@@ -11,13 +11,13 @@ import requests
 from bs4 import BeautifulSoup
 
 from checkTime import check_time
-from summarizeArticle import summarize_article
 
 nltk.download('punkt')
 
 POLISH_SITES = ['https://www.tvpworld.com', 'https://tvn24.pl/tvn24-news-in-english']
 KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_europe',
         'usa', 'world', 'middle_east', 'americas', 'tech']
+
 
 # return top 20 links with 'https://tvn24.pl/tvn24-news-in-english/' in it
 def tvn24():
@@ -145,14 +145,17 @@ if __name__ == '__main__':
     from prepArticle import prep_article_dict
     from checkEurope import Check_Europe_Section
     from checkArticle import check_article
+    from jsonArticles import results_into_json
+    from summarizeArticle import summarize_article
 
     with open('resources/feeds/EuropeNewsFeed.txt', 'r') as file1:
         europe_feeds = file1.read().splitlines()
 
-    europe_countries = [ 'france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
-                         'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
+    europe_countries = ['france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
+                        'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
                         'Moldova', 'Iceland', 'georgia tbilisi'
-                        'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo', 'Montenegro', 'Bosnia',
+                                              'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo',
+                        'Montenegro', 'Bosnia',
                         'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
                         'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
                         ]
@@ -175,6 +178,7 @@ if __name__ == '__main__':
 
     print("sleeping")
     time.sleep(5)
+
     # now we need to set europe countries lists
     france_list, poland_list, russia_list = [], [], []
     germany_list, gb_list, eu_list, r_o_e_list = [], [], [], []
@@ -205,29 +209,28 @@ if __name__ == '__main__':
                             r_o_e_list.append(article1)
 
     all_eu_countries_list = [europe_articles_list, france_list, poland_list, russia_list,
-                             germany_list, gb_list, eu_list, r_o_e_list
-                             ]
+                             germany_list, gb_list, eu_list, r_o_e_list]
 
     print("sleeping")
     time.sleep(5)
 
     groups_for_json = []
+    count = 0
     for country in all_eu_countries_list:
         print(f'Country: {len(country)}')
-        groups_for_json.append(check_article(country))
+        results_into_json(check_article(country, KEYS[count]), KEYS[count])
 
-    count = 1
-    for j in groups_for_json:
-        print(f'Final for {count}: {len(j)}')
-        with open(f'{count}.txt', 'w') as file2:
-            for k in j:
-                for i in k:
-                    file2.write(str(i))
-                    file2.write('\n')
-                file2.write('\n')
-                file2.write('\n')
-        count += 1
+    # count = 1
+    # for j in groups_for_json:
+    #     print(f'Final for {count}: {len(j)}')
+    #     with open(f'{count}.txt', 'w') as file2:
+    #         for k in j:
+    #             for i in k:
+    #                 file2.write(str(i))
+    #                 file2.write('\n')
+    #             file2.write('\n')
+    #             file2.write('\n')
+    #     count += 1
 
     stop = time.perf_counter()
     print(f'Elapsed time: {round(start - stop, 2)} seconds')
-

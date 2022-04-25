@@ -37,26 +37,24 @@ def grab_feeds():
     # countries (or tech topics) list for Google rss feeds
     europe_countries = ['france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
                         'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
-                        'Moldova',
                         'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo', 'Montenegro', 'Bosnia',
                         'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
                         'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
-                        'Iceland', 'georgia tbilisi']
+                        'Iceland', 'georgia tbilisi', 'Moldova']
     americas_countries = ['Mexico', 'Peru', 'Brazil', 'Columbia', 'Argentina', 'Chile', 'Venezuela', 'Bolivia',
-                          'Ecuador',
-                          'Panama', 'Uruguay', 'Paraguay', 'Nicaragua', 'Honduras', 'el salvador', 'cuba', 'guatemala',
-                          'canada']
+                          'Ecuador', 'Panama', 'Uruguay', 'Paraguay', 'Nicaragua', 'Honduras', 'el salvador', 'cuba',
+                          'guatemala', 'canada']
     me_countries = ['Israel', 'iran', 'Saudi arabia', 'Egypt', 'Turkey', 'Iraq', 'Syria', 'Jordan', 'Yemen',
                     'oman', 'united arab emirates', 'bahrain', 'kuwait', 'azerbaijan', 'lebanon', 'qatar',
-                    'afghanistan',
-                    'OPEC']
-    world_countries = ['china', 'japan', 'india', 'north korea', 'south korea', 'myanmar', 'cambodia', 'vietnam',
+                    'afghanistan', 'taliban', 'OPEC']
+    world_countries = ['china', 'beijing', 'china government', 'japanese government', 'japan', 'india',
+                       'indian government', 'korean government', 'africa', 'senegal'
+                       'north korea', 'south korea', 'myanmar', 'cambodia', 'vietnam',
                        'thailand', 'indonesia', 'pakistan', 'kazakhstan', 'turkmenistan', 'mongolia', 'uzbekistan',
                        'bangladesh', 'sri lanka', 'malaysia', 'taiwan', 'hong kong', 'philippines', 'algeria',
                        'tunisia', 'nigeria', 'australia', 'new zealand', 'cameroon', 'ghana', 'ethiopia',
                        'sudan', 'libya', 'south africa', 'zimbabwe', 'angola', 'ivory coast', 'liberia', 'morocco',
-                       'tanzania', 'kenya', 'central african republic', 'democratic republic of the congo', 'mali',
-                       'niger', 'senegal']
+                       'tanzania', 'kenya', 'central african republic', 'democratic republic of the congo', 'mali']
     # variable name not quite appropriate, but makes things easy
     tech_countries = ['vulnerability remote code execution', 'windows critical flaw', 'russian hackers',
                       'poc vulnerability', 'cryptocurrency', 'crypto mining', 'bitcoin', 'ethereum', 'apple software',

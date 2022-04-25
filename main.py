@@ -13,6 +13,7 @@ from jsonArticles import results_into_json
 KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_europe',
         'usa', 'world', 'middle_east', 'americas', 'tech']
 
+
 # note order: europe_feeds, usa_feeds, world_feeds, me_feeds, americas_feeds, tech_feeds
 def main():
     # gather all the feeds and collect them into separate lists
@@ -96,7 +97,7 @@ def main():
         count = 0
         print(f'Country: {len(country)}')
         # groups_for_json.append(check_article(country))
-        results_into_json(check_article(country), KEYS[count])
+        results_into_json(check_article(country, KEYS[count]), KEYS[count])
 
 
 if __name__ == '__main__':

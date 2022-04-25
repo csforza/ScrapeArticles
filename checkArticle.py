@@ -5,6 +5,44 @@ from sortAndRank import sort_and_rank
 
 
 # checks similarity based on the number of matching keywords
+def check_similarity_war(keywords1, num1, keywords2):
+    count, similar_percent = 0, 0
+
+    for i in keywords1:
+        if i in keywords2:
+            count += 1
+
+    try:
+        similar_percent = count / num1
+    except ZeroDivisionError:
+        pass
+
+    # if the article is the exact same one then it will be = 1
+    if .5 <= similar_percent < 1:
+        return True
+    else:
+        return False
+
+
+def check_similarity_high(keywords1, num1, keywords2):
+    count, similar_percent = 0, 0
+
+    for i in keywords1:
+        if i in keywords2:
+            count += 1
+
+    try:
+        similar_percent = count / num1
+    except ZeroDivisionError:
+        pass
+
+    # if the article is the exact same one then it will be = 1
+    if .45 <= similar_percent < 1:
+        return True
+    else:
+        return False
+
+
 def check_similarity(keywords1, num1, keywords2):
     count, similar_percent = 0, 0
 
@@ -24,24 +62,52 @@ def check_similarity(keywords1, num1, keywords2):
         return False
 
 
-def run_sim_check(article, article_list, key=None):
+def check_similarity_low(keywords1, num1, keywords2):
+    count, similar_percent = 0, 0
+
+    for i in keywords1:
+        if i in keywords2:
+            count += 1
+
+    try:
+        similar_percent = count / num1
+    except ZeroDivisionError:
+        pass
+
+    # if the article is the exact same one then it will be = 1
+    if .35 <= similar_percent < 1:
+        return True
+    else:
+        return False
+
+
+def run_sim_check(article, article_list, key):
     is_similar = False
     article_list2 = article_list.copy()
     article_sims_list = [article]
     num1 = len(article['keywords'])
     for article2 in article_list2:
-        is_similar = check_similarity(article['keywords'], num1, article2['keywords'])
+        if key == 'poland' or key == 'americas':
+            is_similar = check_similarity_low(article['keywords'], num1, article2['keywords'])
+        if key == 'rest_of_europe' or key == 'usa':
+            is_similar = check_similarity_high(article['keywords'], num1, article2['keywords'])
+        if key == 'russia' or key == 'tech':
+            is_similar = check_similarity_war(article['keywords'], num1, article2['keywords'])
+        else:  # world, me, france, germany, europe, eu, gb
+            is_similar = check_similarity(article['keywords'], num1, article2['keywords'])
+
         if is_similar:
             article_sims_list.append(article2)
 
     for ag in article_sims_list:
         if article_sims_list.count(ag) > 1:
+            print("BYE")
             article_sims_list.remove(ag)
 
     return article_sims_list
 
 
-def check_article(article_list, key=None):
+def check_article(article_list, key):
 
     article_groups = []
     # so as not to favor articles that are pulled first
@@ -56,6 +122,11 @@ def check_article(article_list, key=None):
                 article_groups.append(r.result())
 
     article_groups = sort_and_rank(article_groups)
+
+    # just in case any groups are the same
+    for ra in article_groups:
+        if article_groups.count(ra) > 1:
+            article_groups.remove(ra)
 
     return article_groups
 
