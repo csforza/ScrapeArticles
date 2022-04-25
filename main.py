@@ -91,12 +91,9 @@ def main():
     print("sleeping")
     time.sleep(5)
 
-    groups_for_json = []
     count = 0
     for country in all_countries_list:
-        count = 0
         print(f'Country: {len(country)}')
-        # groups_for_json.append(check_article(country))
         results_into_json(check_article(country, KEYS[count]), KEYS[count])
 
 
