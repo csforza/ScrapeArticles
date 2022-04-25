@@ -16,7 +16,8 @@ from summarizeArticle import summarize_article
 nltk.download('punkt')
 
 POLISH_SITES = ['https://www.tvpworld.com', 'https://tvn24.pl/tvn24-news-in-english']
-
+KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_europe',
+        'usa', 'world', 'middle_east', 'americas', 'tech']
 
 # return top 20 links with 'https://tvn24.pl/tvn24-news-in-english/' in it
 def tvn24():
@@ -148,12 +149,12 @@ if __name__ == '__main__':
     with open('resources/feeds/EuropeNewsFeed.txt', 'r') as file1:
         europe_feeds = file1.read().splitlines()
 
-    europe_countries = [ #'france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
-                        # 'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
-                        # 'Moldova', 'Iceland', 'georgia tbilisi'
+    europe_countries = [ 'france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
+                         'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
+                        'Moldova', 'Iceland', 'georgia tbilisi'
                         'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo', 'Montenegro', 'Bosnia',
                         'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
-                        #'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
+                        'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
                         ]
 
     europe_feeds.extend(append_google_feeds(europe_countries))
@@ -175,7 +176,8 @@ if __name__ == '__main__':
     print("sleeping")
     time.sleep(5)
     # now we need to set europe countries lists
-    france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list = [], [], [], [], [], [], []
+    france_list, poland_list, russia_list = [], [], []
+    germany_list, gb_list, eu_list, r_o_e_list = [], [], [], []
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as ex:
         countries_results = [ex.submit(Check_Europe_Section, eal) for eal in europe_articles_list]
@@ -202,7 +204,9 @@ if __name__ == '__main__':
                         if country == 'rest of europe':
                             r_o_e_list.append(article1)
 
-    all_eu_countries_list = [france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list]
+    all_eu_countries_list = [europe_articles_list, france_list, poland_list, russia_list,
+                             germany_list, gb_list, eu_list, r_o_e_list
+                             ]
 
     print("sleeping")
     time.sleep(5)
@@ -213,17 +217,15 @@ if __name__ == '__main__':
         groups_for_json.append(check_article(country))
 
     count = 1
-    for f in groups_for_json:
-        # articles_dict = {}
-        print(len(f))
-        # for b in f:
-        #     try:
-        #         articles_dict[b['title']] = b
-        #     except:
-        #         continue
-        with open(f"{str(count)}.json",
-                  "w") as outfile:
-            json.dump(f, outfile, indent=4)
+    for j in groups_for_json:
+        print(f'Final for {count}: {len(j)}')
+        with open(f'{count}.txt', 'w') as file2:
+            for k in j:
+                for i in k:
+                    file2.write(str(i))
+                    file2.write('\n')
+                file2.write('\n')
+                file2.write('\n')
         count += 1
 
     stop = time.perf_counter()

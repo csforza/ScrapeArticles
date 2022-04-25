@@ -8,7 +8,10 @@ from checkEurope import Check_Europe_Section
 import concurrent.futures
 import json
 from checkArticle import check_article
+from jsonArticles import results_into_json
 
+KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_europe',
+        'usa', 'world', 'middle_east', 'americas', 'tech']
 
 # note order: europe_feeds, usa_feeds, world_feeds, me_feeds, americas_feeds, tech_feeds
 def main():
@@ -80,30 +83,21 @@ def main():
                         if country == 'rest of europe':
                             r_o_e_list.append(article1)
 
-    all_countries_list = [france_list, poland_list, russia_list, germany_list, gb_list, eu_list, r_o_e_list,
-                          usa_articles_list, world_articles_list, me_articles_list, americas_articles_list,
+    all_countries_list = [europe_articles_list, france_list, poland_list, russia_list, germany_list, gb_list, eu_list,
+                          r_o_e_list, usa_articles_list, world_articles_list, me_articles_list, americas_articles_list,
                           tech_articles_list]
 
     print("sleeping")
     time.sleep(5)
 
     groups_for_json = []
+    count = 0
     for country in all_countries_list:
+        count = 0
         print(f'Country: {len(country)}')
-        groups_for_json.append(check_article(country))
+        # groups_for_json.append(check_article(country))
+        results_into_json(check_article(country), KEYS[count])
 
-    count = 1
-    for f in groups_for_json:
-        print(len(f))
-        if len(f) < 20:
-            with open(f"{str(count)}.json",
-                      "w") as outfile:
-                json.dump(f, outfile, indent=4)
-        else:
-            with open(f"{str(count)}.json",
-                      "w") as outfile:
-                json.dump(f[:20], outfile, indent=4)
-        count += 1
 
 if __name__ == '__main__':
     start = time.perf_counter()
