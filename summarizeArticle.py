@@ -10,7 +10,7 @@ import time
 from keepOrDump import keep_or_dump
 
 
-def summarize_article(url):
+def summarize_article(url, key):
     time.sleep(random.uniform(0, 0.4))
 
     new_list = []
@@ -85,7 +85,7 @@ def summarize_article(url):
 
         # what we have in the article data so far, we now check before moving on
         # new_list = [summary, text, keywords, title, url]
-        koc = keep_or_dump(new_list)
+        koc = keep_or_dump(new_list, key)
         if koc:
             new_list = koc
         else:

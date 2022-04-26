@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import json
 
 
@@ -5,7 +6,7 @@ import json
 # this way in case an individual section needs modification I can modify without affecting the rest
 def europe_all(ranked_articles):
     with open('resources/test_results/EuropeResults.txt', 'w') as file2:
-        for i in ranked_articles:
+        for i in ranked_articles[:30]:
             for j in i:
                 file2.write(str(j))
                 file2.write('\n')
@@ -16,8 +17,11 @@ def europe_all(ranked_articles):
     europe_topic_json = {}
     europe_main_headline_json = {}
     europe_sub_headline_json = {}
+    europe_all_articles = []
 
     europe_main_headline_to_json_list = [m for m in ranked_articles[0][:5]]
+    europe_all_articles = [m for m in europe_main_headline_to_json_list]
+
     europe_sub_headline_to_json_list = [m for group in ranked_articles[1:4] for m in group[:3]]
     europe_topic_to_json_list = [groups[0] for groups in ranked_articles[4:20]]
 
@@ -370,7 +374,7 @@ def americas(ranked_articles):
 
 def tech(ranked_articles):
 
-    with open('../TechResults.txt',
+    with open('resources/test_results/TechResults.txt',
               'w') as file2:
         for i in ranked_articles:
             for j in i:
@@ -403,7 +407,7 @@ def tech(ranked_articles):
     for ta in tech_to_json_list:
         tech_json[ta['title']] = ta
 
-    with open("../Tech.json", "w") as outfile:
+    with open("resources/json_results/Tech.json", "w") as outfile:
         json.dump(tech_json, outfile, indent=4)
 
 

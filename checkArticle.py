@@ -2,6 +2,7 @@
 import random
 import concurrent.futures
 from sortAndRank import sort_and_rank
+import time
 
 
 # checks similarity based on the number of matching keywords
@@ -18,7 +19,26 @@ def check_similarity_war(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .5 <= similar_percent < 1:
+    if .6 <= similar_percent < 1:
+        return True
+    else:
+        return False
+
+
+def check_similarity_higher(keywords1, num1, keywords2):
+    count, similar_percent = 0, 0
+
+    for i in keywords1:
+        if i in keywords2:
+            count += 1
+
+    try:
+        similar_percent = count / num1
+    except ZeroDivisionError:
+        pass
+
+    # if the article is the exact same one then it will be = 1
+    if .53 <= similar_percent < 1:
         return True
     else:
         return False
@@ -81,19 +101,41 @@ def check_similarity_low(keywords1, num1, keywords2):
         return False
 
 
+def check_similarity_lowest(keywords1, num1, keywords2):
+    count, similar_percent = 0, 0
+
+    for i in keywords1:
+        if i in keywords2:
+            count += 1
+
+    try:
+        similar_percent = count / num1
+    except ZeroDivisionError:
+        pass
+
+    # if the article is the exact same one then it will be = 1
+    if .33 <= similar_percent < 1:
+        return True
+    else:
+        return False
+
+
 def run_sim_check(article, article_list, key):
+    time.sleep(random.uniform(0, 0.4))
     is_similar = False
     article_list2 = article_list.copy()
     article_sims_list = [article]
     num1 = len(article['keywords'])
     for article2 in article_list2:
-        if key == 'poland' or key == 'americas':
-            is_similar = check_similarity_low(article['keywords'], num1, article2['keywords'])
-        if key == 'rest_of_europe' or key == 'usa':
+        if key == 'poland':
+            is_similar = check_similarity_lowest(article['keywords'], num1, article2['keywords'])
+        if key == 'middle_east' or key == 'tech':
+            is_similar = check_similarity_higher(article['keywords'], num1, article2['keywords'])
+        if key == 'rest_of_europe' or key == 'usa' or key == 'europe' or key == 'world':
             is_similar = check_similarity_high(article['keywords'], num1, article2['keywords'])
-        if key == 'russia' or key == 'tech':
+        if key == 'russia':
             is_similar = check_similarity_war(article['keywords'], num1, article2['keywords'])
-        else:  # world, me, france, germany, europe, eu, gb
+        else:
             is_similar = check_similarity(article['keywords'], num1, article2['keywords'])
 
         if is_similar:
@@ -101,14 +143,12 @@ def run_sim_check(article, article_list, key):
 
     for ag in article_sims_list:
         if article_sims_list.count(ag) > 1:
-            print("BYE")
             article_sims_list.remove(ag)
 
     return article_sims_list
 
 
 def check_article(article_list, key):
-
     article_groups = []
     # so as not to favor articles that are pulled first
     random.shuffle(article_list)
@@ -129,4 +169,5 @@ def check_article(article_list, key):
             article_groups.remove(ra)
 
     return article_groups
+
 

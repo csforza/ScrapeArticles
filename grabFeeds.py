@@ -10,7 +10,7 @@ def append_google_feeds(countries):
         if ' ' in country:
             country = country.replace(' ', '+')
         return_list.append(
-            f'https://news.google.com/rss/search?q={country}+-sports+after:{TWO_DAYS_AGO_DATE}&hl=en-US&gl=US&ceid=US:en'
+            f'https://news.google.com/rss/search?q={country}+-sports+-ripon+-themobility.club+after:{TWO_DAYS_AGO_DATE}&hl=en-US&gl=US&ceid=US:en'
         )
     return return_list
 
@@ -40,13 +40,17 @@ def grab_feeds():
                         'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo', 'Montenegro', 'Bosnia',
                         'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
                         'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
-                        'Iceland', 'georgia tbilisi', 'Moldova']
-    americas_countries = ['Mexico', 'Peru', 'Brazil', 'Columbia', 'Argentina', 'Chile', 'Venezuela', 'Bolivia',
+                        'Iceland', 'georgia tbilisi', 'Moldova', 'warsaw']
+    americas_countries = ['Mexico', 'Peru', 'Brazil', 'bogota colombia', 'Argentina', 'santiago Chile', 'Venezuela',
+                          'Bolivia', 'guatemala', 'canada', 'Justin Trudeau', 'Jair Bolsonaro',
                           'Ecuador', 'Panama', 'Uruguay', 'Paraguay', 'Nicaragua', 'Honduras', 'el salvador', 'cuba',
-                          'guatemala', 'canada']
-    me_countries = ['Israel', 'iran', 'Saudi arabia', 'Egypt', 'Turkey', 'Iraq', 'Syria', 'Jordan', 'Yemen',
+                          'Andrés Manuel López Obrador', 'Nayib Bukele', 'Canada Trudeau', 'Mexico City',
+                          'Mexican Government', 'Mexican Cartels', 'Canadian government', 'Brazilian Government'
+                          ]
+    me_countries = ['Israel', 'iran', 'Saudi arabia', 'Egypt', 'Turkish government', 'Iraq', 'Syria', 'Jordan', 'Yemen',
                     'oman', 'united arab emirates', 'bahrain', 'kuwait', 'azerbaijan', 'lebanon', 'qatar',
-                    'afghanistan', 'taliban', 'OPEC']
+                    'afghanistan', 'taliban', 'OPEC', 'Erdogan', 'Salman of Saudi Arabia', 'Israel Government',
+                    'Iran Government', 'houthi', 'hezbollah']
     world_countries = ['china', 'beijing', 'china government', 'japanese government', 'japan', 'india',
                        'indian government', 'korean government', 'africa', 'senegal'
                        'north korea', 'south korea', 'myanmar', 'cambodia', 'vietnam',

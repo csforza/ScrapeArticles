@@ -13,7 +13,6 @@ KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_
         'usa', 'world', 'middle_east', 'americas', 'tech']
 
 
-# note order: europe_feeds, usa_feeds, world_feeds, me_feeds, americas_feeds, tech_feeds
 def main():
     # gather all the feeds and collect them into separate lists
     big_list = grab_feeds()
@@ -34,11 +33,14 @@ def main():
                         total_tech_links]
 
     full_articles_list = []
+    count1 = 0
+    count1_list = [0]
     for tll in total_links_list:
+        print(f"Key: {KEYS[count1]}")
         counted = 0
         articles_list = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=100) as e:
-            articles_results = [e.submit(summarize_article, k) for k in tll]
+            articles_results = [e.submit(summarize_article, k, KEYS[count1]) for k in tll]
 
             for g in concurrent.futures.as_completed(articles_results):
                 if g.result():
@@ -49,7 +51,12 @@ def main():
 
         print(f"length of list = {len(tll)}")
         print(f"length of counted = {counted}")
-        time.sleep(5)
+        time.sleep(60)
+        if count1 == 1:
+            count1 = 8
+        else:
+            count1 += 1
+        count1_list.append(count1)
 
     europe_articles_list = full_articles_list[0]
     usa_articles_list = full_articles_list[1]
@@ -89,12 +96,16 @@ def main():
 
     print("sleeping")
     time.sleep(5)
-
-    count = 0
+    count2 = 0
     for country in all_countries_list:
-        print(f'Country: {len(country)}')
-        results_into_json(check_article(country, KEYS[count]), KEYS[count])
+        print(f'{KEYS[count2]}: {len(country)}')
+        results_into_json(check_article(country, KEYS[count2]), KEYS[count2])
+        count2 += 1
+        time.sleep(60)
 
+# todo
+# what we did in tech we may have to do for all
+# or we just have too many articles using google search
 
 if __name__ == '__main__':
     start = time.perf_counter()

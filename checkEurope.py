@@ -6,7 +6,7 @@ def Check_Europe_Section(article):
     poland_keys = [' poland ', ' polish ', ' warsaw ', ' duda ', ' Poland ', ' Polish ', 'Warsaw', ' Duda ']
     germany_keys = ['german ', 'germany', 'berlin', 'merkel', 'German ', 'Germany', 'Merkel', 'Berlin']
     gb_keys = [' england ', ' english', ' gb ', ' ireland ', ' wales ', ' scotland ', ' british ', ' irish ',
-               ' scottish ', ' welsh ',
+               ' scottish ', ' welsh ', 'Great Britain', ' great britain ',
                ' london ', ' dublin ', 'England', 'English', 'GB', 'Ireland', 'Wales', 'Scotland', 'British',
                'Irish',
                'Scottish', 'Welsh', 'London', 'Dublin']
@@ -53,23 +53,22 @@ def Check_Europe_Section(article):
     # i don't search the links here because some sites may have 'english' in the link
     # meaning the site language
 
-    ukraine_pass = True
+    oops_pass = True
     for i in gb_keys:
         if i in article['title'] or i in article['text']:
-            # unfortunately some hits may be articles dedicated to ukraine or other nations and include nothing about the UK....
+            # unfortunately some hits may be articles that have nothing about the UK....
             # and LGBT articles as well since it has 'gb'
-            oops_list = ['ukraine', 'Ukraine', 'ukrainian', 'Ukrainian', 'TVN24 News in English', 'English word',
-                         'English language', 'LGBT', 'lgbt'
-                                                     'English sentence', 'English phrase', 'tutored English',
-                         'taught English', 'speak English',
-                         'teach in English', 'English book',
-                         'language is English', 'English word', 'English accent', 'News in English']
+            oops_list = ['TVN24 News in English', 'English word', 'English language', 'LGBT', 'lgbt',
+                         'English sentence', 'English phrase', 'tutored English', 'taught English', 'speak English',
+                         'teach in English', 'English book', 'language is English', 'English word', 'English accent',
+                         'News in English']
             for o in oops_list:
                 if o in article['title'] or o in article['text']:
-                    ukraine_pass = False
-            if ukraine_pass:
+                    oops_pass = False
+            if oops_pass:
                 countries.append('gb')
                 break
+
     for i in russia_keys:
         if i in article['title'] or i in article['text'] or i in article['link']:
             countries.append('russia')
@@ -86,5 +85,5 @@ def Check_Europe_Section(article):
     if 'ekathimerini' in article['link']:
         countries = ['rest of europe']
 
-    #because of the threading, i need to return the article back as well
+    # because of the threading, i need to return the article back as well
     return [article, countries]

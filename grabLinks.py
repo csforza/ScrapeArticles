@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import concurrent.futures
-import json
 import random
 import time
 from datetime import datetime
@@ -15,8 +14,9 @@ from checkTime import check_time
 nltk.download('punkt')
 
 POLISH_SITES = ['https://www.tvpworld.com', 'https://tvn24.pl/tvn24-news-in-english']
-KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_europe',
-        'usa', 'world', 'middle_east', 'americas', 'tech']
+KEYS = ['europe', 'france', 'poland', 'russia', 'germany', 'gb', 'eu', 'rest_of_europe'
+        # 'usa', 'world', 'middle_east', 'americas', 'tech'
+        ]
 
 
 # return top 20 links with 'https://tvn24.pl/tvn24-news-in-english/' in it
@@ -153,9 +153,9 @@ if __name__ == '__main__':
 
     europe_countries = ['france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
                         'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
-                        'Moldova', 'Iceland', 'georgia tbilisi'
+                        'Moldova', 'Iceland', 'georgia tbilisi', 'polish government'
                                               'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo',
-                        'Montenegro', 'Bosnia',
+                        'Montenegro', 'Bosnia', 'london', 'great britain',
                         'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
                         'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
                         ]
@@ -170,7 +170,7 @@ if __name__ == '__main__':
     # begin getting the article data
     europe_articles_list = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as e:
-        articles_results = [e.submit(summarize_article, k) for k in europe_links]
+        articles_results = [e.submit(summarize_article, k, 'europe') for k in europe_links]
 
         for g in concurrent.futures.as_completed(articles_results):
             if g.result():
@@ -217,20 +217,8 @@ if __name__ == '__main__':
     groups_for_json = []
     count = 0
     for country in all_eu_countries_list:
-        print(f'Country: {len(country)}')
+        print(f'{KEYS[count]}: {len(country)}')
         results_into_json(check_article(country, KEYS[count]), KEYS[count])
-
-    # count = 1
-    # for j in groups_for_json:
-    #     print(f'Final for {count}: {len(j)}')
-    #     with open(f'{count}.txt', 'w') as file2:
-    #         for k in j:
-    #             for i in k:
-    #                 file2.write(str(i))
-    #                 file2.write('\n')
-    #             file2.write('\n')
-    #             file2.write('\n')
-    #     count += 1
 
     stop = time.perf_counter()
     print(f'Elapsed time: {round(start - stop, 2)} seconds')
