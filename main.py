@@ -34,7 +34,6 @@ def main():
 
     full_articles_list = []
     count1 = 0
-    count1_list = [0]
     for tll in total_links_list:
         print(f"Key: {KEYS[count1]}")
         counted = 0
@@ -56,7 +55,6 @@ def main():
             count1 = 8
         else:
             count1 += 1
-        count1_list.append(count1)
 
     europe_articles_list = full_articles_list[0]
     usa_articles_list = full_articles_list[1]
@@ -96,14 +94,14 @@ def main():
 
     print("sleeping")
     time.sleep(5)
+
     count2 = 0
     almost_final_list = []
     for country in all_countries_list:
         print(f'{KEYS[count2]}: {len(country)}')
-        # results_into_json(check_article(country, KEYS[count2]), KEYS[count2])
         almost_final_list.append(check_article(country, KEYS[count2]))
         count2 += 1
-        time.sleep(60)
+        time.sleep(30)
 
     for region in almost_final_list:
         for ag in region:
@@ -113,21 +111,11 @@ def main():
                     if k in j:
                         if j in region:
                             region.remove(j)
-                        # or - removing the current group instead of the next
-                        # if ag in region:
-                        #     region.remove(ag)
 
     count3 = 0
     for finished in almost_final_list:
         results_into_json(finished, KEYS[count3])
         count3 += 1
-
-
-# todo
-# test either removing the next group or the current group if almost duplicate groups
-# or we just have too many articles using google search - looks better but top groups still messed up
-# lower threads in check_article? - will go down to 10?
-# all set: americas
 
 
 if __name__ == '__main__':
@@ -136,3 +124,5 @@ if __name__ == '__main__':
     stop = time.perf_counter()
 
     print(f'Elapsed time: {round(stop - start, 2)} seconds')
+
+

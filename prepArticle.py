@@ -24,6 +24,5 @@ def prep_article_dict(data):
         'image': image,
         'news date': published
     }
-    # print(article)
 
     return article

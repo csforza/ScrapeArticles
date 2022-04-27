@@ -1,11 +1,6 @@
 #!/usr/bin/python
 
-AMERICAS = ['Mexico', 'Peru', 'Brazil', 'Colombia', 'Argentina', 'Chile', 'Venezuela', 'Bolivia',
-            'Ecuador', 'Panama', 'Uruguay', 'Paraguay', 'Nicaragua', 'Honduras', 'El Salvador', 'Cuba',
-            'Guatemala', 'Canada', 'Trudeau', 'Bolsonaro', 'Mexico City', 'Ottawa', 'Quebec', 'America']
-MIDDLE_EAST = ['Israel', 'Iran', 'Saudi Arabia', 'Egypt', 'Turkey', 'Iraq', 'Syria', 'Jordan', 'Yemen',
-               'Oman', 'United Arab Emirates', 'UAE', 'Bahrain', 'Kuwait', 'Azerbaijan', 'Lebanon', 'Qatar',
-               'Afghanistan', 'Taliban', 'OPEC']
+
 WORLD = ['China', 'Japan', 'India', 'Senegal', 'North Korea', 'South Korea', 'Myanmar', 'Cambodia', 'Vietnam',
          'Thailand', 'Indonesia', 'Pakistan', 'Kazakhstan', 'Turkmenistan', 'Mongolia', 'Uzbekistan',
          'Bangladesh', 'Sri Lanka', 'Malaysia', 'Taiwan', 'Hong Kong', 'Philippines', 'Algeria',
@@ -43,7 +38,7 @@ def keep_or_dump(article, key):
             if text.count(keyword.lower()) > 1:
                 return None
 
-    if url == '':
+    if url == '' or title == '' or text == '':
         return None
 
     for section in bad_sections:
@@ -53,67 +48,26 @@ def keep_or_dump(article, key):
             else:
                 return None
 
+    bad_stuff = ["Morning Report", "Covid-19 in Bulgaria", 'COVID-19 in Bulgaria', "themobility", "ripon", "Ripon",
+                 'irishemigrant', "Saudi Arabia records", "UAE Reports", "Coronavirus in Russia: The Latest News",
+                 "fact-check", "Fact-check", "Photos:", 'bnamericas', "LIVE UPDATES", "Live Updates", "Live updates",
+                 "updates:", "update:", "Poll:", 'Become a certified AWS professional', 'COVID-19: ', "PS5", 'Xbox',
+                 'Nintendo', 'VPN bundle', 'Zoomer Radio', 'Desired Skills', 'Desired Work Experience',
+                 'Peru: Coronavirus', 'Peru: Over', 'ad blocker', 'bloomberg', 'benzinga', 'We use cookies',
+                 'Google Analytics', 'In review:', 'Earnings Call', 'Shareholders', 'shareholders', 'Earnings Report',
+                 'earnings report', 'Earnings report', 'propertyeu.info']
+
     if len(keywords) < 3:
         return None
-    if "Morning Report" in title:
-        return None
-    # to get rid of useless covid numbers
-    if "Covid-19 in Bulgaria" in title:
-        return None
-    if "themobility" in url or "themobility" in title or "themobility" in keywords:
-        return None
-    if "ripon" in url or "ripon" in title or "ripon" in keywords:
-        return None
-    if "Ripon" in url or "Ripon" in title or "Ripon" in keywords:
-        return None
-    if 'irishemigrant' in url:
-        return None
-    if "Saudi Arabia records" in title or 'UAE reports' in title:
-        return None
-    if "Coronavirus in Russia: The Latest News" in title:
-        return None
-    # no false fact checks
-    if "fact-check" in title or "Fact-check" in title:
-        return None
-    if "Photos:" in title:
-        return None
-    if 'bnamericas' in url or 'bnamericas' in title:
-        return None
-    if "LIVE UPDATES" in title or "Live Updates" in title or "Live updates" in title:
-        return None
-    if "updates:" in title or "update:" in title:
-        return None
-    if 'Poll:' in title:
-        return None
-    if 'Become a certified AWS professional' in title:
-        return None
-    if 'COVID-19: ' in title:
-        return None
-    if 'COVID-19 in Bulgaria' in title:
-        return None
-    if 'PS5' in title or 'Xbox' in title or 'Nintendo' in title:
-        return None
-    if 'VPN bundle' in title:
-        return None
-    if 'Zoomer Radio' in title:
-        return None
-    if 'Desired Skills' in text or 'Desired Work Experience' in text:
-        return None
-    if 'Peru: Coronavirus' in title or 'Peru: Over' in title:
-        return None
-    if 'ad blocker' in text:
-        return None
+    for i in bad_stuff:
+        if i in title or i in text or i in keywords or i in url:
+            return None
 
-    # checking world, me, and americas articles to ensure relevance to the region
+    # checking world articles to ensure relevance to the region
     # we don't want stories from asian newspapers that are about topics not relevant to the region the paper is from
-    # can do europe too but it does not have this problem
     if key == 'world':
         country_count = 0
         for t in text.split(' '):
-            #     if key == 'americas' and t in AMERICAS:
-            #         country_count += 1
-            #     if key == 'middle_east' and t in MIDDLE_EAST:
-            #         country_count += 1
             if key == 'world' and t in WORLD:
                 country_count += 1
         if country_count == 0:
@@ -149,48 +103,3 @@ def keep_or_dump(article, key):
 
     return [article[0], text, title, keywords, url]
 
-
-if __name__ == '__main__':
-    import time
-    from grabFeeds import append_google_feeds
-    from prepArticle import prep_article_dict
-    import concurrent.futures
-    from checkArticle import check_article
-    from jsonArticles import results_into_json
-    from summarizeArticle import summarize_article
-    from grabLinks import grab_links
-
-    start = time.perf_counter()
-
-    with open('resources/feeds/AmericasFeeds.txt', 'r') as file1:
-        americas_feeds = file1.read().splitlines()
-
-    americas_countries = ['Israel', 'iran', 'Saudi arabia', 'Egypt', 'Turkish government', 'Iraq', 'Syria', 'Jordan', 'Yemen',
-                    'oman', 'united arab emirates', 'bahrain', 'kuwait', 'azerbaijan', 'lebanon', 'qatar',
-                    'afghanistan', 'taliban', 'OPEC', 'Erdogan', 'Salman of Saudi Arabia', 'Israel Government',
-                    'Iran Government', 'houthi', 'hezbollah']
-
-    americas_feeds.extend(append_google_feeds(americas_countries))
-
-    # grab the links from each of the rss feeds
-    americas_links = grab_links(americas_feeds)
-    time.sleep(5)
-    americas_links = list(set(americas_links))
-
-    # begin getting the article data
-    americas_articles_list = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as e:
-        articles_results = [e.submit(summarize_article, k, 'middle_east') for k in americas_links]
-
-        for g in concurrent.futures.as_completed(articles_results):
-            if g.result():
-                americas_articles_list.append(prep_article_dict(g.result()))
-
-    print("sleeping")
-    time.sleep(5)
-
-    print(f'{"middle_east"}: {len(americas_articles_list)}')
-    results_into_json(check_article(americas_articles_list, 'middle_east'), 'middle_east')
-
-    stop = time.perf_counter()
-    print(f'Elapsed time: {round(start - stop, 2)} seconds')

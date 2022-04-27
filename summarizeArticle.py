@@ -5,7 +5,7 @@ from newspaper import Article, Config
 from sentimentAnalysis import sentiment_analysis
 import random
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 from keepOrDump import keep_or_dump
 
@@ -26,7 +26,7 @@ def summarize_article(url, key):
         # if a 403 instead (blocked) - try with different headers and see what comes up...
         if response.status_code == 403:
             headers = {"User-Agent": "Googlebot/2.1 (+http://www.google.com/bot.html)"}
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=5)
             if response.status_code == 200:
                 user_agent = "Googlebot/2.1 (+http://www.google.com/bot.html)"
                 config = Config()
@@ -35,7 +35,7 @@ def summarize_article(url, key):
             else:
                 headers = {
                     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
-                response = requests.get(url, headers=headers)
+                response = requests.get(url, headers=headers, timeout=5)
                 if response.status_code == 200:
                     user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"
                     config = Config()
@@ -75,16 +75,12 @@ def summarize_article(url, key):
         keywords = article.keywords
         new_list.append(keywords)
 
-        # working with the title
-        # need to remove any html encoded stuff
-        # also remove any articles with useless data so they don't get worked on
         title = article.title
         new_list.append(title)
 
         new_list.append(url)
 
-        # what we have in the article data so far, we now check before moving on
-        # new_list = [summary, text, keywords, title, url]
+        # what we have in the article data so far, we now check before moving on to filter out more garbage
         koc = keep_or_dump(new_list, key)
         if koc:
             new_list = koc
@@ -109,7 +105,7 @@ def summarize_article(url, key):
 
         # do sentiment analysis and return those values
         sa = sentiment_analysis(text)
-        if sa[0] == 0.0 and sa[1] == 0.0:
+        if sa[0] == 0.0 or sa[1] == 0.0:
             return None
         else:
             new_list.append(sa[0])  # polarity score
@@ -127,36 +123,5 @@ def summarize_article(url, key):
     except:
         return None
 
-    # print(new_list)
     return new_list
 
-
-if __name__ == '__main__':
-    import json
-    from prepArticle import prep_article_dict
-    urls = [
-        'https://www.politico.eu/article/emmanuel-macron-france-election-2022-president-climate-change-greens-love-hate/?utm_source=RSS_Feed&utm_medium=RSS&utm_campaign=RSS_Syndication',
-        'https://insidesources.com/the-threat-of-nuclear-war-and-the-license-it-has-given-putin/',
-        'https://www.express.co.uk/news/uk/1600039/pension-scam-alan-barratt-susan-dalton-jailed',
-        'https://www.baltictimes.com/novaturas_taking_over_bookings_of_kidy_tour_clients/',
-        'https://www.19fortyfive.com/2022/04/yj-21-chinas-new-anti-ship-missile-will-make-the-navy-sweat/',
-        'https://www.irishemigrant.com/food-iqf-market-size-outlook-and-forecast/',
-        'https://www.euractiv.com/section/politics/short_news/croatian-pm-says-he-will-boycott-president/',
-        'https://www.euractiv.com/section/digital/news/us-eu-and-western-allies-to-subscribe-to-democratic-principles-of-the-internet/',
-        'https://www.rferl.org/a/georgia-nft-sales-russia-ukaine-fundraiser/31814302.html',
-        'https://dronedj.com/2022/04/21/drones-emissions-monitor/'
-    ]
-
-    output = []
-    for url in urls:
-        i = summarize_article(url)
-        if i:
-            output.append(prep_article_dict(i))
-    articles_dict = {}
-    for b in output:
-        if b:
-            # print(b)
-            articles_dict[b['title']] = b
-    with open("europe_test_results_json.json",
-              "w") as outfile:
-        json.dump(articles_dict, outfile, indent=4)

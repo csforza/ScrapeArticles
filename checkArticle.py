@@ -76,32 +76,13 @@ def check_similarity(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .35 <= similar_percent < 1:
-        return True
-    else:
-        return False
-
-
-def check_similarity_low(keywords1, num1, keywords2):
-    count, similar_percent = 0, 0
-
-    for i in keywords1:
-        if i in keywords2:
-            count += 1
-
-    try:
-        similar_percent = count / num1
-    except ZeroDivisionError:
-        pass
-
-    # if the article is the exact same one then it will be = 1
     if .33 <= similar_percent < 1:
         return True
     else:
         return False
 
 
-def check_similarity_lowest(keywords1, num1, keywords2):
+def check_similarity_low(keywords1, num1, keywords2):
     count, similar_percent = 0, 0
 
     for i in keywords1:
@@ -127,13 +108,13 @@ def run_sim_check(article, article_list, key):
     article_sims_list = [article]
     num1 = len(article['keywords'])
     for article2 in article_list2:
-        # if key == 'poland':
-        #     is_similar = check_similarity_lowest(article['keywords'], num1, article2['keywords'])
-        if key == 'usa' or key == 'middle_east':
+        if key == 'poland' or key == 'eu':
+            is_similar = check_similarity_low(article['keywords'], num1, article2['keywords'])
+        if key == 'usa' or key == 'middle_east' or key == 'tech':
             is_similar = check_similarity_higher(article['keywords'], num1, article2['keywords'])
-        if key == 'world':
+        if key == 'world' or key == 'gb' or key == 'americas':
             is_similar = check_similarity_high(article['keywords'], num1, article2['keywords'])
-        if key == 'russia' or key == 'tech' or key == 'europe':
+        if key == 'europe' or key == 'russia' or key == 'rest_of_europe':
             is_similar = check_similarity_war(article['keywords'], num1, article2['keywords'])
         else:
             is_similar = check_similarity(article['keywords'], num1, article2['keywords'])
@@ -153,7 +134,7 @@ def check_article(article_list, key):
     # so as not to favor articles that are pulled first
     random.shuffle(article_list)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as e:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as e:
         results = [e.submit(run_sim_check, article, article_list, key) for article in article_list]
 
         # if more than one similar article found, add to the grouped articles

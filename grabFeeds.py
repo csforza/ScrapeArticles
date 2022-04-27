@@ -1,16 +1,11 @@
 #!/usr/bin/python
-from datetime import datetime, timedelta
-
-TWO_DAYS_AGO_DATE = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")
 
 
 def append_google_feeds(countries):
     return_list = []
     for country in countries:
-        if ' ' in country:
-            country = country.replace(' ', '+')
         return_list.append(
-            f'https://news.google.com/rss/search?q={country}+-sports+-ripon+-themobility.club+after:{TWO_DAYS_AGO_DATE}&hl=en-US&gl=US&ceid=US:en'
+            f'https://news.google.com/rss/search?q={country}+-sports+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen'
         )
     return return_list
 
@@ -40,7 +35,11 @@ def grab_feeds():
     # first need to see if too much google rss is causing it
 
     # for europe, will just add italy, spain, and poland because I could never get enough results
-    europe_countries = ['poland', 'italy', 'spain', 'warsaw', 'France', 'Germany', 'England']
+    europe_countries = ['poland', 'italy', 'spain', 'warsaw', 'France', 'Germany', 'England', 'european union',
+                        'Brussels', 'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic',
+                        'Denmark', 'Estonia', 'Finland', 'Greece', 'Hungary', 'Ireland', 'Latvia', 'Lithuania',
+                        'Luxembourg', 'Malta', 'Netherlands', 'Vatican', 'Portugal', 'Romania', 'Slovakia',
+                        'Slovenia', 'Sweden', 'Turkey', 'Scotland', 'Catholic Church', 'Rome']
 
     # this should be ok....had trouble getting data
     americas_countries = ['Mexico', 'Peru', 'Brazil', 'bogota colombia', 'Argentina', 'santiago Chile', 'Venezuela',
@@ -60,8 +59,6 @@ def grab_feeds():
                        'indian government', 'korean government', 'australia', 'new zealand']
     # variable name not quite appropriate, but makes things easy
     tech_countries = ['cryptocurrency', 'cyber attack', 'ransomware', 'hacker group', 'vulnerability site:medium.com']
-    # not at all necessary
-    # usa_countries = ['white house', 'joe biden', 'donald trump', 'congress', 'usa defense', 'usa senate']
 
     # now add the Google News feeds to the feeds we have already
     to_append = [(europe_countries, europe_feeds), (world_countries, world_feeds),

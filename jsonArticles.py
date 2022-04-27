@@ -17,10 +17,8 @@ def europe_all(ranked_articles):
     europe_topic_json = {}
     europe_main_headline_json = {}
     europe_sub_headline_json = {}
-    europe_all_articles = []
 
     europe_main_headline_to_json_list = [m for m in ranked_articles[0][:5]]
-    europe_all_articles = [m for m in europe_main_headline_to_json_list]
 
     europe_sub_headline_to_json_list = [m for group in ranked_articles[1:4] for m in group[:3]]
     europe_topic_to_json_list = [groups[0] for groups in ranked_articles[4:20]]
@@ -58,7 +56,7 @@ def france(france_ranked):
     france_headline_json = {}
 
     france_headline_to_json_list = [b for france_1 in france_ranked[:3] for b in france_1[:3]]
-    france_topic_to_json_list = [france_2[0] for france_2 in france_ranked[3:17]]
+    france_topic_to_json_list = [france_2[0] for france_2 in france_ranked[3:17] if len(france_2) > 1]
 
     for fta in france_topic_to_json_list:
         france_topic_json[fta['title']] = fta
@@ -87,7 +85,7 @@ def poland(poland_ranked):
     poland_headline_json = {}
 
     poland_headline_to_json_list = [c for poland_1 in poland_ranked[:2] for c in poland_1[:3]]
-    poland_topic_to_json_list = [poland_2[0] for poland_2 in poland_ranked[2:]]
+    poland_topic_to_json_list = [poland_2[0] for poland_2 in poland_ranked[2:16] if len(poland_2) > 1]
 
     for pta in poland_topic_to_json_list:
         poland_topic_json[pta['title']] = pta
@@ -117,7 +115,7 @@ def germany(germany_ranked):
     germany_headline_json = {}
 
     germany_headline_to_json_list = [d for germany_1 in germany_ranked[:3] for d in germany_1[:3]]
-    germany_topic_to_json_list = [germany_2[0] for germany_2 in germany_ranked[3:17]]
+    germany_topic_to_json_list = [germany_2[0] for germany_2 in germany_ranked[3:17] if len(germany_2) > 1]
 
     for gta in germany_topic_to_json_list:
         germany_topic_json[gta['title']] = gta
@@ -147,7 +145,7 @@ def russia(russia_ranked):
     russia_headline_json = {}
 
     russia_headline_to_json_list = [e for russia_1 in russia_ranked[:3] for e in russia_1[:3]]
-    russia_topic_to_json_list = [russia_2[0] for russia_2 in russia_ranked[3:17]]
+    russia_topic_to_json_list = [russia_2[0] for russia_2 in russia_ranked[3:17] if len(russia_2) > 1]
 
     for rta in russia_topic_to_json_list:
         russia_topic_json[rta['title']] = rta
@@ -177,7 +175,7 @@ def gb(gb_ranked):
     gb_headline_json = {}
 
     gb_headline_to_json_list = [f for gb_1 in gb_ranked[:3] for f in gb_1[:3]]
-    gb_topic_to_json_list = [gb_2[0] for gb_2 in gb_ranked[3:17]]
+    gb_topic_to_json_list = [gb_2[0] for gb_2 in gb_ranked[3:17] if len(gb_2) > 1]
 
     for gbta in gb_topic_to_json_list:
         gb_topic_json[gbta['title']] = gbta
@@ -207,7 +205,7 @@ def eu(eu_ranked):
     eu_headline_json = {}
 
     eu_headline_to_json_list = [g for eu_1 in eu_ranked[:3] for g in eu_1[:3]]
-    eu_topic_to_json_list = [eu_2[0] for eu_2 in eu_ranked[3:17]]
+    eu_topic_to_json_list = [eu_2[0] for eu_2 in eu_ranked[3:17] if len(eu_2) > 1]
 
     for euta in eu_topic_to_json_list:
         eu_topic_json[euta['title']] = euta
@@ -237,7 +235,7 @@ def roe(r_of_europe_ranked):
     r_of_europe_headline_json = {}
 
     r_of_europe_headline_to_json_list = [h for r_of_europe_1 in r_of_europe_ranked[:3] for h in r_of_europe_1[:3]]
-    r_of_europe_topic_to_json_list = [r_of_europe_2[0] for r_of_europe_2 in r_of_europe_ranked[3:17]]
+    r_of_europe_topic_to_json_list = [r_of_europe_2[0] for r_of_europe_2 in r_of_europe_ranked[3:17] if len(r_of_europe_2) > 1]
 
     for roeta in r_of_europe_topic_to_json_list:
         r_of_europe_topic_json[roeta['title']] = roeta
@@ -267,7 +265,7 @@ def usa(ranked_articles):
     usa_headline_json = {}
 
     usa_headline_to_json_list = [n for group1 in ranked_articles[:4] for n in group1[:3]]
-    usa_topic_to_json_list = [groups1[0] for groups1 in ranked_articles[4:20]]
+    usa_topic_to_json_list = [groups1[0] for groups1 in ranked_articles[4:20] if len(groups1) > 1]
 
     for usata in usa_topic_to_json_list:
         usa_topic_json[usata['title']] = usata
@@ -297,7 +295,7 @@ def world(ranked_articles):
     world_headline_json = {}
 
     world_headline_to_json_list = [o for group4 in ranked_articles[:3] for o in group4[:3]]
-    world_topic_to_json_list = [groups4[0] for groups4 in ranked_articles[3:19]]
+    world_topic_to_json_list = [groups4[0] for groups4 in ranked_articles[3:19] if len(groups4) > 1]
 
     for wta in world_topic_to_json_list:
         world_topic_json[wta['title']] = wta
@@ -327,7 +325,7 @@ def me(ranked_articles):
     me_headline_json = {}
 
     me_headline_to_json_list = [o for group2 in ranked_articles[:3] for o in group2[:3]]
-    me_topic_to_json_list = [groups2[0] for groups2 in ranked_articles[3:19]]
+    me_topic_to_json_list = [groups2[0] for groups2 in ranked_articles[3:19] if len(groups2) > 1]
 
     for meta in me_topic_to_json_list:
         me_topic_json[meta['title']] = meta
@@ -357,7 +355,7 @@ def americas(ranked_articles):
     americas_headline_json = {}
 
     americas_headline_to_json_list = [p for group3 in ranked_articles[:2] for p in group3[:3]]
-    americas_topic_to_json_list = [groups3[0] for groups3 in ranked_articles[2:15]]
+    americas_topic_to_json_list = [groups3[0] for groups3 in ranked_articles[2:15] if len(groups3) > 1]
 
     for ata in americas_topic_to_json_list:
         americas_topic_json[ata['title']] = ata
@@ -442,46 +440,3 @@ def results_into_json(groups_of_articles, key):
     if key == 'tech':
         tech(groups_of_articles)
 
-
-if __name__ == '__main__':
-    from grabFeeds import append_google_feeds
-    from prepArticle import prep_article_dict
-    from grabLinks import grab_links
-    from checkArticle import check_article
-    from summarizeArticle import summarize_article
-    import time
-    import concurrent.futures
-
-    start = time.perf_counter()
-    with open('resources/feeds/TechFeeds.txt', 'r') as file6:
-        tech_feeds = file6.read().splitlines()
-
-    tech_countries = ['vulnerability remote code execution', 'windows critical flaw', 'russian hackers',
-                      'poc vulnerability', 'cryptocurrency', 'crypto mining', 'bitcoin', 'ethereum', 'apple software',
-                      'vulnerability security patch', 'hacker malware', 'microsoft vulnerability', 'cyber attack',
-                      'ransomware', 'hacker group', 'ransomware group', 'blockchain', 'crypto currencies',
-                      'cryptocurrency investing', 'linux security', 'windows security', 'vulnerability site:medium.com',
-                      'windows exploit site:medium.com', 'malware site:medium.com', 'hacker site:medium.com']
-
-    tech_feeds.extend(append_google_feeds(tech_countries))
-
-    # grab the links from each of the rss feeds
-    tech_links = grab_links(tech_feeds)
-    time.sleep(5)
-    tech_links = list(set(tech_links))
-
-    # begin getting the article data
-    tech_articles_list = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as e:
-        articles_results = [e.submit(summarize_article, k) for k in tech_links]
-
-        for g in concurrent.futures.as_completed(articles_results):
-            if g.result():
-                tech_articles_list.append(prep_article_dict(g.result()))
-
-    print("sleeping")
-    time.sleep(5)
-    results_into_json(check_article(tech_articles_list, 'tech'), 'tech')
-
-    stop = time.perf_counter()
-    print(f'Elapsed time: {round(start - stop, 2)} seconds')
