@@ -113,7 +113,7 @@ def main():
                     if k in j:
                         if j in region:
                             region.remove(j)
-                        # or
+                        # or - removing the current group instead of the next
                         # if ag in region:
                         #     region.remove(ag)
 
