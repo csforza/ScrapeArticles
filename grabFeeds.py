@@ -35,42 +35,37 @@ def grab_feeds():
         tech_feeds = file6.read().splitlines()
 
     # countries (or tech topics) list for Google rss feeds
-    europe_countries = ['france', 'European Union', 'poland', 'germany', 'england', 'ireland', 'scotland', 'russia',
-                        'Norway', 'Sweden', 'Finland', 'Belarus', 'Estonia', 'Latvia', 'Lithuania', 'Ukraine',
-                        'Romania', 'Bulgaria', 'Greece', 'North Macedonia', 'Albania', 'Kosovo', 'Montenegro', 'Bosnia',
-                        'Serbia', 'Croatia', 'Hungary', 'Austria', 'Slovenia', 'Slovakia', 'Czechia', 'Switzerland',
-                        'Italy', 'Rome', 'Vatican', 'Spain', 'Portugal', 'Denmark', 'Netherlands', 'Belgium', 'Armenia',
-                        'Iceland', 'georgia tbilisi', 'Moldova', 'warsaw']
+    # updating these lists and shrinking because there might be over saturation
+    # results from my old program we much better
+    # first need to see if too much google rss is causing it
+
+    # for europe, will just add italy, spain, and poland because I could never get enough results
+    europe_countries = ['poland', 'italy', 'spain', 'warsaw', 'France', 'Germany', 'England']
+
+    # this should be ok....had trouble getting data
     americas_countries = ['Mexico', 'Peru', 'Brazil', 'bogota colombia', 'Argentina', 'santiago Chile', 'Venezuela',
                           'Bolivia', 'guatemala', 'canada', 'Justin Trudeau', 'Jair Bolsonaro',
                           'Ecuador', 'Panama', 'Uruguay', 'Paraguay', 'Nicaragua', 'Honduras', 'el salvador', 'cuba',
                           'Andrés Manuel López Obrador', 'Nayib Bukele', 'Canada Trudeau', 'Mexico City',
                           'Mexican Government', 'Mexican Cartels', 'Canadian government', 'Brazilian Government'
                           ]
-    me_countries = ['Israel', 'iran', 'Saudi arabia', 'Egypt', 'Turkish government', 'Iraq', 'Syria', 'Jordan', 'Yemen',
-                    'oman', 'united arab emirates', 'bahrain', 'kuwait', 'azerbaijan', 'lebanon', 'qatar',
-                    'afghanistan', 'taliban', 'OPEC', 'Erdogan', 'Salman of Saudi Arabia', 'Israel Government',
-                    'Iran Government', 'houthi', 'hezbollah']
-    world_countries = ['china', 'beijing', 'china government', 'japanese government', 'japan', 'india',
-                       'indian government', 'korean government', 'africa', 'senegal'
-                       'north korea', 'south korea', 'myanmar', 'cambodia', 'vietnam',
-                       'thailand', 'indonesia', 'pakistan', 'kazakhstan', 'turkmenistan', 'mongolia', 'uzbekistan',
-                       'bangladesh', 'sri lanka', 'malaysia', 'taiwan', 'hong kong', 'philippines', 'algeria',
-                       'tunisia', 'nigeria', 'australia', 'new zealand', 'cameroon', 'ghana', 'ethiopia',
-                       'sudan', 'libya', 'south africa', 'zimbabwe', 'angola', 'ivory coast', 'liberia', 'morocco',
-                       'tanzania', 'kenya', 'central african republic', 'democratic republic of the congo', 'mali']
+    # i don't think will be necessary
+    # me_countries = ['Israel', 'iran', 'Saudi arabia', 'Egypt', 'Turkish government', 'Iraq', 'Syria', 'Jordan', 'Yemen',
+    #                 'oman', 'united arab emirates', 'bahrain', 'kuwait', 'azerbaijan', 'lebanon', 'qatar',
+    #                 'afghanistan', 'taliban', 'OPEC', 'Erdogan', 'Salman of Saudi Arabia', 'Israel Government',
+    #                 'Iran Government', 'houthi', 'hezbollah']
+
+    # overkill, but I didn't get enough china news prior
+    world_countries = ['china', 'china government', 'japanese government', 'japan', 'india',
+                       'indian government', 'korean government', 'australia', 'new zealand']
     # variable name not quite appropriate, but makes things easy
-    tech_countries = ['vulnerability remote code execution', 'windows critical flaw', 'russian hackers',
-                      'poc vulnerability', 'cryptocurrency', 'crypto mining', 'bitcoin', 'ethereum', 'apple software',
-                      'vulnerability security patch', 'hacker malware', 'microsoft vulnerability', 'cyber attack',
-                      'ransomware', 'hacker group', 'ransomware group', 'blockchain', 'crypto currencies',
-                      'cryptocurrency investing', 'linux security', 'windows security', 'vulnerability site:medium.com',
-                      'windows exploit site:medium.com', 'malware site:medium.com', 'hacker site:medium.com']
-    usa_countries = ['white house', 'joe biden', 'donald trump', 'congress', 'usa defense', 'usa senate']
+    tech_countries = ['cryptocurrency', 'cyber attack', 'ransomware', 'hacker group', 'vulnerability site:medium.com']
+    # not at all necessary
+    # usa_countries = ['white house', 'joe biden', 'donald trump', 'congress', 'usa defense', 'usa senate']
 
     # now add the Google News feeds to the feeds we have already
-    to_append = [(europe_countries, europe_feeds), (usa_countries, usa_feeds), (world_countries, world_feeds),
-                 (me_countries, me_feeds), (americas_countries, americas_feeds), (tech_countries, tech_feeds)]
+    to_append = [(europe_countries, europe_feeds), (world_countries, world_feeds),
+                 (americas_countries, americas_feeds), (tech_countries, tech_feeds)]
     for x, y in to_append:
         y.extend(append_google_feeds(x))
 

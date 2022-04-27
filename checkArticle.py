@@ -19,7 +19,7 @@ def check_similarity_war(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .6 <= similar_percent < 1:
+    if .5 <= similar_percent < 1:
         return True
     else:
         return False
@@ -38,7 +38,7 @@ def check_similarity_higher(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .53 <= similar_percent < 1:
+    if .45 <= similar_percent < 1:
         return True
     else:
         return False
@@ -57,7 +57,7 @@ def check_similarity_high(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .45 <= similar_percent < 1:
+    if .4 <= similar_percent < 1:
         return True
     else:
         return False
@@ -76,7 +76,7 @@ def check_similarity(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .4 <= similar_percent < 1:
+    if .35 <= similar_percent < 1:
         return True
     else:
         return False
@@ -95,7 +95,7 @@ def check_similarity_low(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .35 <= similar_percent < 1:
+    if .33 <= similar_percent < 1:
         return True
     else:
         return False
@@ -114,7 +114,7 @@ def check_similarity_lowest(keywords1, num1, keywords2):
         pass
 
     # if the article is the exact same one then it will be = 1
-    if .33 <= similar_percent < 1:
+    if .3 <= similar_percent < 1:
         return True
     else:
         return False
@@ -127,13 +127,13 @@ def run_sim_check(article, article_list, key):
     article_sims_list = [article]
     num1 = len(article['keywords'])
     for article2 in article_list2:
-        if key == 'poland':
-            is_similar = check_similarity_lowest(article['keywords'], num1, article2['keywords'])
-        if key == 'middle_east' or key == 'tech':
+        # if key == 'poland':
+        #     is_similar = check_similarity_lowest(article['keywords'], num1, article2['keywords'])
+        if key == 'usa' or key == 'middle_east':
             is_similar = check_similarity_higher(article['keywords'], num1, article2['keywords'])
-        if key == 'rest_of_europe' or key == 'usa' or key == 'europe' or key == 'world':
+        if key == 'world':
             is_similar = check_similarity_high(article['keywords'], num1, article2['keywords'])
-        if key == 'russia':
+        if key == 'russia' or key == 'tech' or key == 'europe':
             is_similar = check_similarity_war(article['keywords'], num1, article2['keywords'])
         else:
             is_similar = check_similarity(article['keywords'], num1, article2['keywords'])

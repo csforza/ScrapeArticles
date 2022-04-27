@@ -99,6 +99,10 @@ def keep_or_dump(article, key):
         return None
     if 'Desired Skills' in text or 'Desired Work Experience' in text:
         return None
+    if 'Peru: Coronavirus' in title or 'Peru: Over' in title:
+        return None
+    if 'ad blocker' in text:
+        return None
 
     # checking world, me, and americas articles to ensure relevance to the region
     # we don't want stories from asian newspapers that are about topics not relevant to the region the paper is from

@@ -3,7 +3,6 @@ https://www.tvpworld.com
 https://www.rfi.fr/en/rss
 https://www.scmp.com/rss/322514/feed
 https://www.rfi.fr/en/france/rss
-https://feeds.feedburner.com/ekathimerini/sKip
 https://nltimes.nl/feed
 https://www.theguardian.com/world/europe-news/rss
 https://www.theguardian.com/uk-news/rss
