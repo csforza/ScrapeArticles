@@ -1,4 +1,4 @@
-# A Tool To Scrape Gloabl News Articles and Output Them Into JSON
+# A Tool To Scrape Global News Articles and Output Them Into JSON
 
 This is just a tool I made for a website I have that scrapes articles, extracts information and then groups the articles based on a similarity score.  It also calculates the polarity and subjectivity of each article as well.
 
