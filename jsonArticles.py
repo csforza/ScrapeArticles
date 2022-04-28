@@ -411,7 +411,9 @@ def tech(ranked_articles):
 
 # pulls all the article groupings and puts them into json files, ready to be delivered to my website
 def results_into_json(groups_of_articles, key):
-    print(f'Length of {key}: {len(groups_of_articles)}')
+    with open('results.txt', 'a') as file:
+        file.write(f'Length of {key}: {len(groups_of_articles)}')
+        file.write('\n')
 
     if key == 'europe':
         europe_all(groups_of_articles)

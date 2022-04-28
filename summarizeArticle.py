@@ -16,7 +16,7 @@ def summarize_article(url, key):
     new_list = []
 
     url = url.strip()
-    print(url)
+    # print(url)
 
     try:
         response = requests.get(url, timeout=5)

@@ -48,8 +48,8 @@ def main():
 
         full_articles_list.append(articles_list)
 
-        print(f"length of list = {len(tll)}")
-        print(f"length of counted = {counted}")
+        # print(f"length of list = {len(tll)}")
+        # print(f"length of counted = {counted}")
         time.sleep(60)
         if count1 == 0:
             count1 = 8
@@ -98,7 +98,7 @@ def main():
     count2 = 0
     almost_final_list = []
     for country in all_countries_list:
-        print(f'{KEYS[count2]}: {len(country)}')
+        # print(f'{KEYS[count2]}: {len(country)}')
         almost_final_list.append(check_article(country, KEYS[count2]))
         count2 += 1
         time.sleep(30)

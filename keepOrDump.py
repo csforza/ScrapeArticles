@@ -22,6 +22,7 @@ def keep_or_dump(article, key):
                     '/fashion', '/beauty', '/football', '/art/', '/recipes', '/weather', '.mp3', '.jpg', '.png']
 
     # new_list = [summary, text, title, keywords, url]
+    summary = article[0]
     text = article[1]
     keywords = article[2]
     title = article[3]
@@ -55,12 +56,13 @@ def keep_or_dump(article, key):
                  'Nintendo', 'VPN bundle', 'Zoomer Radio', 'Desired Skills', 'Desired Work Experience',
                  'Peru: Coronavirus', 'Peru: Over', 'ad blocker', 'bloomberg', 'benzinga', 'We use cookies',
                  'Google Analytics', 'In review:', 'Earnings Call', 'Shareholders', 'shareholders', 'Earnings Report',
-                 'earnings report', 'Earnings report', 'propertyeu.info']
+                 'earnings report', 'Earnings report', 'propertyeu.info', 'uses cookies', 'Early Edition:', 'WATCH:',
+                 'Op-ed: ', 'Live: ']
 
     if len(keywords) < 3:
         return None
     for i in bad_stuff:
-        if i in title or i in text or i in keywords or i in url:
+        if i in title or i in text or i in keywords or i in url or i in summary:
             return None
 
     # checking world articles to ensure relevance to the region
