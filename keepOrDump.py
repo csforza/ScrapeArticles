@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import re
 
 WORLD = ['China', 'Japan', 'India', 'Senegal', 'North Korea', 'South Korea', 'Myanmar', 'Cambodia', 'Vietnam',
          'Thailand', 'Indonesia', 'Pakistan', 'Kazakhstan', 'Turkmenistan', 'Mongolia', 'Uzbekistan',
@@ -57,7 +57,8 @@ def keep_or_dump(article, key):
                  'Peru: Coronavirus', 'Peru: Over', 'ad blocker', 'bloomberg', 'benzinga', 'We use cookies',
                  'Google Analytics', 'In review:', 'Earnings Call', 'Shareholders', 'shareholders', 'Earnings Report',
                  'earnings report', 'Earnings report', 'propertyeu.info', 'uses cookies', 'Early Edition:', 'WATCH:',
-                 'Op-ed: ', 'Live: ']
+                 'Op-ed: ', 'Live: ', 'businesswire', 'agriculture.com', 'finextra.com', 'Tweets of the Week',
+                 'dandc.eu', 'marketwatch.com', 'War in Ukraine: Ukrainians deported to Russia beaten and mistreated']
 
     if len(keywords) < 3:
         return None
@@ -74,6 +75,11 @@ def keep_or_dump(article, key):
                 country_count += 1
         if country_count == 0:
             return None
+
+    # remove stock tickers and business articles
+    d = re.match(r"[A-Z]{3,}:[A-Z]{3,}", title)
+    if d:
+        return None
 
     # if the article is worth using, check the title or html encoding
     if '&#8216;' in title:
